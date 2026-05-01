@@ -1,0 +1,4 @@
+environs==15.0.*
+google-cloud-api-keys==0.8.*
+google-cloud-dialogflow==2.47.*
+python-telegram-bot==13.*
