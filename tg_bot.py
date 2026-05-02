@@ -61,18 +61,18 @@ def handle_message(update: Update, context: CallbackContext) -> None:
     except Exception as e:
         logger.error(f'Ошибка при обращении к dialogflow: {e}', exc_info=True)
         update.message.reply_text(
-            'Прошу произошла ошибка при обработке запроса. Попробуйте позже.'
+            'Произошла ошибка при обработке запроса. Попробуйте позже.'
         )
 
 
 def main():
     env.read_env()
     BOT_TOKEN = env.str('TG_BOT_TOKEN')
-    PROJECT_ID = env.str('PROJECT_ID')
+    GOOGLE_PROJECT_ID = env.str('GOOGLE_PROJECT_ID')
 
     updater = Updater(BOT_TOKEN)
     dispatcher = updater.dispatcher
-    dispatcher.bot_data['PROJECT_ID'] = PROJECT_ID
+    dispatcher.bot_data['PROJECT_ID'] = GOOGLE_PROJECT_ID
 
     dispatcher.add_handler(CommandHandler('start', start))
     dispatcher.add_handler(
