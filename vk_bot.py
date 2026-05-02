@@ -24,9 +24,10 @@ def detect_intent(project_id, session_id, text, language_code='ru'):
     )
 
     answer = response.query_result.fulfillment_text
-    logger.debug(f'Ответ dialogflow: {answer}')
+    is_fallback = response.query_result.intent.is_fallback
+    logger.debug(f'is_fallback: {is_fallback} | ответ dialogflow: {answer}')
 
-    return answer
+    return answer, is_fallback
 
 
 def handle_message(user_id, vk_api, text):
@@ -58,16 +59,18 @@ def main():
                 f'{user_msg}'
             )
             try:
-                answer = detect_intent(GOOGLE_PROJECT_ID, user_id, user_msg)
-                handle_message(user_id, vk_api, answer)
+                answer, is_fallback = detect_intent(
+                    GOOGLE_PROJECT_ID, user_id, user_msg
+                )
+                if not is_fallback:
+                    handle_message(user_id, vk_api, answer)
+                else:
+                    logger.info('Fallback - бот молчит')
             except Exception as e:
                 logger.error(
                     f'Ошибка при обращении к dialogflow: {e}', exc_info=True
                 )
-                error_msg = (
-                    'Произошла ошибка при обработке запроса. Попробуйте позже.'
-                )
-                handle_message(user_id, vk_api, error_msg)
+                logger.info('Ошибка, бот молчит')
 
 
 if __name__ == '__main__':
