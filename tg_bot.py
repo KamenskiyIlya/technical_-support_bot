@@ -11,7 +11,7 @@ from telegram.ext import (
 
 from logger_conf import setup_logger
 
-logger = setup_logger()
+logger = setup_logger(name='tg_bot')
 
 
 def detect_intent(project_id, session_id, text, language_code='ru'):
@@ -67,7 +67,7 @@ def handle_message(update: Update, context: CallbackContext) -> None:
 
 def main():
     env.read_env()
-    BOT_TOKEN = env.str('BOT_TOKEN')
+    BOT_TOKEN = env.str('TG_BOT_TOKEN')
     PROJECT_ID = env.str('PROJECT_ID')
 
     updater = Updater(BOT_TOKEN)

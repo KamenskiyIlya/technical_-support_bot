@@ -4,6 +4,10 @@ import json
 from environs import env
 from google.cloud import dialogflow
 
+from logger_conf import setup_logger
+
+logger = setup_logger(name='upload_intent')
+
 
 def parse_cmd_args():
     parser = argparse.ArgumentParser(
@@ -41,7 +45,7 @@ def create_intent(project_id, display_name, training_phrases, answer):
     response = intents_client.create_intent(
         request={'parent': parent, 'intent': intent}
     )
-    print(f'Интент {display_name} создан')
+    logger.info(f'Интент {display_name} создан')
 
     return response
 
@@ -60,7 +64,7 @@ def main():
     training_phrases = intent_data.get('questions', [])
     answer = intent_data.get('answer')
     if not training_phrases or not answer:
-        print('Не хватает данных, нет вопросов или ответов')
+        logger.info('Не хватает данных, нет вопросов или ответов')
 
     create_intent(PROJECT_ID, intent_name, training_phrases, answer)
 

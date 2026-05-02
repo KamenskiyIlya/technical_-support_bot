@@ -4,10 +4,6 @@ from google.cloud.api_keys_v2 import Key
 
 
 def create_api_key(project_id: str, suffix: str) -> Key:
-    """
-    Creates and restrict an API key in google cloud project.
-    """
-
     client = api_keys_v2.ApiKeysClient()
 
     key = api_keys_v2.Key()
